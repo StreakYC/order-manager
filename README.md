@@ -53,19 +53,32 @@ ascending order based on the `orderHint`.
 The `id` string is used to identify an item within a group and used to identify
 the element in remembering how it has been moved by the user.
 
-### orderManager.removeItem(groupId, id)
+### orderManager.getOrderedItems(): Array<Item<T>>
 
-This removes the previously-added item with the given `groupId` and `id`.
+Retrieve the ordered list of added items. Don't try to mutate the array or
+objects directly in it.
 
-### orderManager.getOrderedItems()
-
-Retrieve the ordered list of added items.
-
-### orderManager.moveItem(sourceIndex, destinationIndex)
+### orderManager.moveItem(sourceIndex: number, destinationIndex: number)
 
 Move an item from one position in the ordered list to another. The change will
 be persisted so that the item will be added into the same position relative to
 the other current items in the future.
+
+### orderManager.updateItemValue(groupId: string, id: string, value: T)
+
+Update the value property of an item identified by its groupId and id.
+
+### orderManager.updateItemValueByIndex(index: number, value: T)
+
+Update the value property of an item identified by its current index.
+
+### orderManager.removeItem(groupId: string, id: string)
+
+This removes a previously added item identified by its groupId and id.
+
+### orderManager.removeItemByIndex(index: number)
+
+This removes a previously added item identified by its groupId and id.
 
 ## Example
 

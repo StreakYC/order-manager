@@ -41,46 +41,167 @@ test('addItem, removeItem', () => {
     value: {v: 'foo'}
   }]);
 
-  // Make sure we didn't mutate the returned array.
+  o.addItem({
+    groupId: 'blah',
+    id: 'foo2',
+    orderHint: 0,
+    value: {v: 'foo2'}
+  });
+  o.addItem({
+    groupId: 'blah',
+    id: 'foo3',
+    orderHint: 0,
+    value: {v: 'foo3'}
+  });
+
+  expect(o.getOrderedItems()).toEqual([{
+    groupId: 'blah',
+    id: 'foo',
+    orderHint: 0,
+    value: {v: 'foo'}
+  }, {
+    groupId: 'blah',
+    id: 'foo2',
+    orderHint: 0,
+    value: {v: 'foo2'}
+  }, {
+    groupId: 'blah',
+    id: 'foo3',
+    orderHint: 0,
+    value: {v: 'foo3'}
+  }]);
+
+  // Make sure we didn't mutate the previously returned array.
+  expect(second).toEqual([{
+    groupId: 'blah',
+    id: 'foo',
+    orderHint: 0,
+    value: {v: 'foo'}
+  }]);
+
   expect(first).toEqual([]);
 
-  o.removeItem('blah', 'bar');
-  expect(o.getOrderedItems().length).toBe(1);
+  o.removeItem('blah', 'bar'); // should do nothing
+  expect(o.getOrderedItems().map(x => x.id)).toEqual(['foo', 'foo2', 'foo3']);
   o.removeItem('blah', 'foo');
-  expect(o.getOrderedItems().length).toBe(0);
+  expect(o.getOrderedItems().map(x => x.id)).toEqual(['foo2', 'foo3']);
+  o.removeItemByIndex(1);
+  expect(o.getOrderedItems().map(x => x.id)).toEqual(['foo2']);
+  o.removeItemByIndex(0);
+  expect(o.getOrderedItems().map(x => x.id)).toEqual([]);
 
   // Make sure we didn't mutate the returned array.
-  expect(second.length).toBe(1);
+  expect(second.map(x => x.id)).toEqual(['foo']);
 });
 
-test('mutations to passed item are not respected', () => {
+test('updateValue works, values are frozen', () => {
   const storage: Object = new MockStorage();
   const o = new OrderManager(makeOptions(storage));
 
-  const item = {
+  function checkListIsFrozen() {
+    expect(Object.isFrozen(o.getOrderedItems())).toBe(true);
+    o.getOrderedItems().forEach(item => {
+      expect(Object.isFrozen(item)).toBe(true);
+    });
+  }
+
+  checkListIsFrozen();
+
+  const item1 = {
     groupId: 'blah',
     id: 'foo',
     orderHint: 0,
     value: {v: 'foo'}
   };
-  o.addItem(item);
+  o.addItem(item1);
+  o.addItem({
+    groupId: 'blah',
+    id: 'foo2',
+    orderHint: 0,
+    value: {v: 'foo2'}
+  });
+  checkListIsFrozen();
   expect(o.getOrderedItems()).toEqual([
     {
       groupId: 'blah',
       id: 'foo',
       orderHint: 0,
       value: {v: 'foo'}
+    }, {
+      groupId: 'blah',
+      id: 'foo2',
+      orderHint: 0,
+      value: {v: 'foo2'}
     }
   ]);
-  item.value = {v: 'bar'};
+
+  // Check that mutation is not respected
+  item1.value = {v: 'bar'};
   expect(o.getOrderedItems()).toEqual([
     {
       groupId: 'blah',
       id: 'foo',
       orderHint: 0,
       value: {v: 'foo'}
+    }, {
+      groupId: 'blah',
+      id: 'foo2',
+      orderHint: 0,
+      value: {v: 'foo2'}
     }
   ]);
+
+  // Check that the returned values are immutable.
+  expect(() => {
+    o.getOrderedItems()[0] = ({}: any);
+  }).toThrowError();
+  expect(() => {
+    o.getOrderedItems().length = 0;
+  }).toThrowError();
+  expect(() => {
+    o.getOrderedItems()[0].value = {v: 'bar'};
+  }).toThrowError();
+
+  o.updateItemValue('blah', 'foo', {v: 'foo updated'});
+  checkListIsFrozen();
+  const afterFirstEdit = o.getOrderedItems();
+  expect(o.getOrderedItems()).toEqual([
+    {
+      groupId: 'blah',
+      id: 'foo',
+      orderHint: 0,
+      value: {v: 'foo updated'}
+    }, {
+      groupId: 'blah',
+      id: 'foo2',
+      orderHint: 0,
+      value: {v: 'foo2'}
+    }
+  ]);
+
+  o.updateItemValueByIndex(0, {v: 'foo updated more'});
+  checkListIsFrozen();
+  expect(o.getOrderedItems()).toEqual([
+    {
+      groupId: 'blah',
+      id: 'foo',
+      orderHint: 0,
+      value: {v: 'foo updated more'}
+    }, {
+      groupId: 'blah',
+      id: 'foo2',
+      orderHint: 0,
+      value: {v: 'foo2'}
+    }
+  ]);
+
+  // Check that updateItemValue* does not mutate old objects
+  expect(afterFirstEdit[0].value.v).toBe('foo updated');
+
+  o.removeItem('blah', 'foo2');
+  checkListIsFrozen();
+  o.removeItemByIndex(0);
+  checkListIsFrozen();
 });
 
 test('orderHint within group is respected', () => {

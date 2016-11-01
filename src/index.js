@@ -5,6 +5,7 @@ import findIndex from 'lodash/findIndex';
 import findLastIndex from 'lodash/findLastIndex';
 import invertBy from 'lodash/invertBy';
 import sortBy from 'lodash/sortBy';
+import freeze from './freeze';
 
 export type Item<T> = {
   groupId: string;
@@ -27,7 +28,7 @@ function itemToCombinedId(x: Item<any>) {
 }
 
 export default class OrderManager<T> {
-  _items: Array<Item<T>> = [];
+  _items: Array<Item<T>> = freeze([]);
   _storage: Storage;
   _needsSort = false;
   _get: () => ?PersistedData;
@@ -129,26 +130,45 @@ export default class OrderManager<T> {
     if (this._needsSort) {
       if (!pdata) pdata = this._read();
       const idsToIndexes: {[id:string]: Array<number>} = invertBy(pdata.order, itemToCombinedId);
-      this._items = sortBy(this._items, item => {
+      this._items = freeze(sortBy(this._items, item => {
         const id = itemToCombinedId(item);
         return Object.prototype.hasOwnProperty.call(idsToIndexes, id) ?
           idsToIndexes[id][0] : 0;
-      });
+      }));
       this._needsSort = false;
     }
   }
   addItem(item: Item<T>) {
     this._updatePersistedDataWithItem(item);
     this._needsSort = true;
-    this._items = this._items.concat([{
+    this._items = this._items.concat([freeze({
       groupId: item.groupId,
       id: item.id,
       orderHint: item.orderHint,
       value: item.value
-    }]);
+    })]);
+  }
+  updateItemValue(groupId: string, id: string, value: T) {
+    this._items = freeze(this._items.map(item => {
+      if (item.groupId === groupId && item.id === id) {
+        return freeze({...item, value});
+      } else {
+        return item;
+      }
+    }));
+  }
+  updateItemValueByIndex(index: number, value: T) {
+    this._sortItemsIfNecessary();
+    this._items = freeze(update(this._items, {$splice: [
+      [index, 1, freeze({...this._items[index], value})]
+    ]}));
   }
   removeItem(groupId: string, id: string) {
-    this._items = this._items.filter(item => item.groupId !== groupId || item.id !== id);
+    this._items = freeze(this._items.filter(item => item.groupId !== groupId || item.id !== id));
+  }
+  removeItemByIndex(index: number) {
+    this._sortItemsIfNecessary();
+    this._items = freeze(update(this._items, {$splice: [[index, 1]]}));
   }
   moveItem(sourceIndex: number, destinationIndex: number) {
     let pdata = this._read();
