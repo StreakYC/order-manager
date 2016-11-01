@@ -140,7 +140,12 @@ export default class OrderManager<T> {
   addItem(item: Item<T>) {
     this._updatePersistedDataWithItem(item);
     this._needsSort = true;
-    this._items = this._items.concat([item]);
+    this._items = this._items.concat([{
+      groupId: item.groupId,
+      id: item.id,
+      orderHint: item.orderHint,
+      value: item.value
+    }]);
   }
   removeItem(groupId: string, id: string) {
     this._items = this._items.filter(item => item.groupId !== groupId || item.id !== id);

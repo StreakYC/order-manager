@@ -53,6 +53,36 @@ test('addItem, removeItem', () => {
   expect(second.length).toBe(1);
 });
 
+test('mutations to passed item are not respected', () => {
+  const storage: Object = new MockStorage();
+  const o = new OrderManager(makeOptions(storage));
+
+  const item = {
+    groupId: 'blah',
+    id: 'foo',
+    orderHint: 0,
+    value: {v: 'foo'}
+  };
+  o.addItem(item);
+  expect(o.getOrderedItems()).toEqual([
+    {
+      groupId: 'blah',
+      id: 'foo',
+      orderHint: 0,
+      value: {v: 'foo'}
+    }
+  ]);
+  item.value = {v: 'bar'};
+  expect(o.getOrderedItems()).toEqual([
+    {
+      groupId: 'blah',
+      id: 'foo',
+      orderHint: 0,
+      value: {v: 'foo'}
+    }
+  ]);
+});
+
 test('orderHint within group is respected', () => {
   const storage: Object = new MockStorage();
   const o = new OrderManager(makeOptions(storage));
