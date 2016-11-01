@@ -33,7 +33,7 @@ export default class OrderManager<T> {
   _get: () => ?PersistedData;
   _set: (x: PersistedData) => void;
   _maxLimit: number;
-  constructor(options: {get(): PersistedData, set(x: PersistedData): void, maxLimit?: number}) {
+  constructor(options: {get(): ?PersistedData, set(x: PersistedData): void, maxLimit?: number}) {
     this._get = options.get;
     this._set = options.set;
     this._maxLimit = options.maxLimit || 200;
