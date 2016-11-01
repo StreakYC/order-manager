@@ -106,12 +106,12 @@ test('handles set fails', () => {
 test('culls old entries from persisted data as it grows large', () => {
   class LimitedMockStorage extends MockStorage {
     setItem(k, v) {
-      expect(v.length).toBeLessThan(20000);
+      expect(v.length).toBeLessThan(5000);
       super.setItem(k, v);
     }
   }
   const storage: Object = new LimitedMockStorage();
-  const o = new OrderManager(makeOptions(storage));
+  const o = new OrderManager({...makeOptions(storage), maxLimit: 30});
   for (let i=4600; i<5000; i++) {
     o.addItem({
       groupId: 'blah',
