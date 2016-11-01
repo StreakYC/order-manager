@@ -30,7 +30,7 @@ export default class OrderManager<T> {
   _items: Array<Item<T>> = [];
   _storage: Storage;
   _needsSort = false;
-  _get: () => PersistedData;
+  _get: () => ?PersistedData;
   _set: (x: PersistedData) => void;
   _maxLimit: number;
   constructor(options: {get(): PersistedData, set(x: PersistedData): void, maxLimit?: number}) {
