@@ -1,5 +1,8 @@
 # OrderManager
 
+[![Circle CI](https://circleci.com/gh/StreakYC/order-manager.svg?style=shield)](https://circleci.com/gh/StreakYC/order-manager)
+[![npm version](https://badge.fury.io/js/order-manager.svg)](https://badge.fury.io/js/order-manager)
+
 This class is a utility for ordering items within groups and persisting the
 changes to the order of the items. The order of groups relative to each other
 is random at the time of insertion of a new group, but the chosen position of
