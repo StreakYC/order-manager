@@ -80,6 +80,11 @@ This removes a previously added item identified by its groupId and id.
 
 This removes a previously added item identified by its groupId and id.
 
+### orderManager.reload()
+
+Tell OrderManager to call the passed `get` function again and re-sort the
+items.
+
 ## Example
 
 ```javascript

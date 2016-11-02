@@ -187,4 +187,7 @@ export default class OrderManager<T> {
     this._sortItemsIfNecessary();
     return this._items;
   }
+  reload() {
+    this._needsSort = true;
+  }
 }

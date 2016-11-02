@@ -501,3 +501,36 @@ test('moveItem works', () => {
     expect(o.getOrderedItems().map(i => i.id)).toEqual(['three', 'one', 'two']);
   }
 });
+
+test('reload works', () => {
+  const storage: Object = new MockStorage();
+  const o = new OrderManager(makeOptions(storage));
+  o.addItem({
+    groupId: 'numbers',
+    id: 'one',
+    orderHint: 1,
+    value: {v: 'one'}
+  });
+  o.addItem({
+    groupId: 'numbers',
+    id: 'two',
+    orderHint: 2,
+    value: {v: 'two'}
+  });
+  o.addItem({
+    groupId: 'numbers',
+    id: 'three',
+    orderHint: 3,
+    value: {v: 'three'}
+  });
+
+  const oldData = storage.getItem('k');
+
+  expect(o.getOrderedItems().map(i => i.id)).toEqual(['one', 'two', 'three']);
+  o.moveItem(0, 1);
+  expect(o.getOrderedItems().map(i => i.id)).toEqual(['two', 'one', 'three']);
+  storage.setItem('k', oldData);
+  expect(o.getOrderedItems().map(i => i.id)).toEqual(['two', 'one', 'three']);
+  o.reload();
+  expect(o.getOrderedItems().map(i => i.id)).toEqual(['one', 'two', 'three']);
+});
