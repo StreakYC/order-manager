@@ -53,7 +53,7 @@ ascending order based on the `orderHint`.
 The `id` string is used to identify an item within a group and used to identify
 the element in remembering how it has been moved by the user.
 
-### orderManager.getOrderedItems(): Array<Item<T>>
+### orderManager.getOrderedItems(): Array
 
 Retrieve the ordered list of added items. Don't try to mutate the array or
 objects directly in it.

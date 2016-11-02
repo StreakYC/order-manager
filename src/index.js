@@ -29,7 +29,6 @@ function itemToCombinedId(x: Item<any>) {
 
 export default class OrderManager<T> {
   _items: Array<Item<T>> = freeze([]);
-  _storage: Storage;
   _needsSort = false;
   _get: () => ?PersistedData;
   _set: (x: PersistedData) => void;
