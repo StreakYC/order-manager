@@ -32,7 +32,7 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.0",
-    "babel-jest": "^16.0.0",
+    "babel-jest": "^17.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-flow-strip-types": "^6.18.0",
@@ -44,7 +44,7 @@
     "eslint-plugin-flowtype": "^2.25.0",
     "flow-bin": "^0.34.0",
     "flow-copy-source": "^1.1.0",
-    "jest": "^16.0.2",
+    "jest": "^17.0.0",
     "mock-webstorage": "^1.0.3",
     "seed-random": "^2.2.0"
   }
