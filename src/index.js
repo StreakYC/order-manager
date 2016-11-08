@@ -128,11 +128,11 @@ export default class OrderManager<T> {
   _sortItemsIfNecessary(pdata: ?PersistedData) {
     if (this._needsSort) {
       if (!pdata) pdata = this._read();
-      const idsToIndexes: {[id:string]: Array<number>} = invertBy(pdata.order, itemToCombinedId);
+      const idsToIndexes: {[id:string]: Array<string>} = invertBy(pdata.order, itemToCombinedId);
       this._items = freeze(sortBy(this._items, item => {
         const id = itemToCombinedId(item);
         return Object.prototype.hasOwnProperty.call(idsToIndexes, id) ?
-          idsToIndexes[id][0] : 0;
+          Number(idsToIndexes[id][0]) : 0;
       }));
       this._needsSort = false;
     }

@@ -534,3 +534,26 @@ test('reload works', () => {
   o.reload();
   expect(o.getOrderedItems().map(i => i.id)).toEqual(['one', 'two', 'three']);
 });
+
+test('sorting happens numerically, not lexicographically', () => {
+  const storage: Object = new MockStorage();
+  const o = new OrderManager(makeOptions(storage));
+  times(16).forEach(i => {
+    o.addItem({
+      groupId: 'numbers',
+      id: String(i),
+      orderHint: 1,
+      value: {i}
+    });
+  });
+
+  expect(o.getOrderedItems().map(i => i.id)).toEqual([
+    '0', '1', '2', '3', '4', '5', '6', '7',
+    '8', '9', '10', '11', '12', '13', '14', '15'
+  ]);
+  o.moveItem(0, 2);
+  expect(o.getOrderedItems().map(i => i.id)).toEqual([
+    '1', '2', '0', '3', '4', '5', '6', '7',
+    '8', '9', '10', '11', '12', '13', '14', '15'
+  ]);
+});
