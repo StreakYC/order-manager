@@ -1,6 +1,6 @@
 {
   "name": "order-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility for ordering items and persisting changes to the order",
   "main": "js/index.js",
   "scripts": {
