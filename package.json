@@ -4,7 +4,7 @@
   "description": "Utility for ordering items and persisting changes to the order",
   "main": "js/index.js",
   "scripts": {
-    "prepublish": "babel -s inline -d js/ src/ --ignore '*.test.*' && flow-copy-source -v src js --ignore '*.test.*'",
+    "prepare": "babel -s inline -d js/ src/ --ignore '*.test.*' && flow-copy-source -v src js --ignore '*.test.*'",
     "test": "npm run lint && npm run flow_check && jest",
     "flow_check": "flow check",
     "lint": "eslint .",
