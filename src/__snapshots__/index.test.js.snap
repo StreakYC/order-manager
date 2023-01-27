@@ -1,44 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`orderHint is not respected across groups, and picked order persists 1`] = `
-Array [
-  Array [
+[
+  [
     "mercury",
     "a",
   ],
-  Array [
+  [
     "mercury",
     "a",
   ],
-  Array [
+  [
     "a",
     "mercury",
   ],
-  Array [
+  [
     "mercury",
     "a",
   ],
-  Array [
+  [
     "a",
     "mercury",
   ],
-  Array [
+  [
     "a",
     "mercury",
   ],
-  Array [
+  [
     "a",
     "mercury",
   ],
-  Array [
+  [
     "a",
     "mercury",
   ],
-  Array [
+  [
     "mercury",
     "a",
   ],
-  Array [
+  [
     "mercury",
     "a",
   ],
@@ -46,8 +46,8 @@ Array [
 `;
 
 exports[`orderHint is respected within groups but not across groups 1`] = `
-Array [
-  Array [
+[
+  [
     "zero",
     "one",
     "two",
@@ -56,7 +56,7 @@ Array [
     "a",
     "b",
   ],
-  Array [
+  [
     "mercury",
     "venus",
     "zero",
@@ -65,7 +65,7 @@ Array [
     "a",
     "b",
   ],
-  Array [
+  [
     "mercury",
     "venus",
     "a",
@@ -74,7 +74,7 @@ Array [
     "one",
     "two",
   ],
-  Array [
+  [
     "mercury",
     "venus",
     "zero",
@@ -83,7 +83,7 @@ Array [
     "a",
     "b",
   ],
-  Array [
+  [
     "a",
     "b",
     "zero",
@@ -92,7 +92,7 @@ Array [
     "mercury",
     "venus",
   ],
-  Array [
+  [
     "a",
     "b",
     "mercury",
@@ -101,7 +101,7 @@ Array [
     "one",
     "two",
   ],
-  Array [
+  [
     "a",
     "b",
     "zero",
@@ -110,7 +110,7 @@ Array [
     "mercury",
     "venus",
   ],
-  Array [
+  [
     "mercury",
     "venus",
     "a",
@@ -119,7 +119,7 @@ Array [
     "one",
     "two",
   ],
-  Array [
+  [
     "zero",
     "one",
     "two",
@@ -128,7 +128,7 @@ Array [
     "mercury",
     "venus",
   ],
-  Array [
+  [
     "zero",
     "one",
     "two",
